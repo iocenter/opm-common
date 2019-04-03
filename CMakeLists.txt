@@ -1,6 +1,14 @@
 project(opm-common C CXX)
 cmake_minimum_required (VERSION 2.8)
 
+# Custom ERT/ECL -> Using Equinor's libecl (bleeding edge)
+set(EQUINOR_ECL_DIR ${HOME}/git/IOC/libecl)
+set(ecl_DIR "${EQUINOR_ECL_DIR}/cmake-build-debug")
+set(CMAKE_INSTALL_PREFIX "${EQUINOR_ECL_DIR}/cmake-build-debug/lib")
+
+set(USE_MPI OFF)
+message(STATUS "USE_MPI: ${USE_MPI}")
+
 option(SIBLING_SEARCH "Search for other modules in sibling directories?" ON)
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/Modules)
 set(OPM_MACROS_ROOT ${PROJECT_SOURCE_DIR})
@@ -59,6 +67,7 @@ include (OpmInit)
 # Look for the opm-tests repository; if found the variable
 # HAVE_OPM_TESTS will be set to true.
 include(Findopm-tests)
+message(STATUS HAVE_OPM_TESTS=${HAVE_OPM_TESTS})
 
 # list of prerequisites for this particular project; this is in a
 # separate file (in cmake/Modules sub-directory) because it is shared
@@ -183,3 +192,6 @@ install(DIRECTORY cmake DESTINATION share/opm)
 
 # Install tab completion skeleton
 install(FILES etc/opm_bash_completion.sh.in DESTINATION share/opm/etc)
+
+set(USE_MPI OFF)
+message(STATUS "USE_MPI: ${USE_MPI}")
